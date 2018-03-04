@@ -1,13 +1,27 @@
 """Simple Flask web site implementation"""
 
 
-from flask import Flask, flash, render_template, redirect, url_for, request, session
+from functools import wraps
+from flask import Flask, flash, redirect, render_template, request, session, url_for
 
 
 # create the application object:
 app = Flask(__name__)
 
 app.secret_key = "my precious"
+
+
+# login required decorator:
+def login_required(function):
+    """this decorator ensures only logged in users can access"""
+    @wraps(function)
+    def wrap(*args, **kwargs):
+        """wrapper decorator"""
+        if 'logged_in' in session:
+            return function(*args, **kwargs)
+        flash('You need to login first.')
+        return redirect(url_for('login'))
+    return wrap
 
 
 # use decorators to link the function to a url:
@@ -18,6 +32,7 @@ def home():
 
 
 @app.route('/welcome')
+@login_required
 def welcome():
     """calls the web site welcome page"""
     return render_template("welcome.html")
@@ -40,6 +55,7 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     """runs the logout logic"""
     session.pop('logged_in', None)
