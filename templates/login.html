@@ -23,6 +23,10 @@
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}</p>
       {% endif %}
+      {% for message in get_flashed_messages() %}
+        {{ message }}
+      {% endfor %}
+      <p>Click <a href="/">here</a> to go to the Main page.</p>
     </div>
   </body>
 </html>

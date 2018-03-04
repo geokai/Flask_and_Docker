@@ -1,11 +1,13 @@
 """Simple Flask web site implementation"""
 
 
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, flash, render_template, redirect, url_for, request, session
 
 
 # create the application object:
 app = Flask(__name__)
+
+app.secret_key = "my precious"
 
 
 # use decorators to link the function to a url:
@@ -21,6 +23,7 @@ def welcome():
     return render_template("welcome.html")
 
 
+#  route for handling the login page logic:
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     """calls the web site login page"""
@@ -30,8 +33,18 @@ def login():
                 request.form['password'] != 'admin':
             error = 'Invalid credentials. Please try again.'
         else:
+            session['logged_in'] = True
+            flash('You were successfully logged in!')
             return redirect(url_for('welcome'))
     return render_template('login.html', error=error)
+
+
+@app.route('/logout')
+def logout():
+    """runs the logout logic"""
+    session.pop('logged_in', None)
+    flash('You were successfully logged out!')
+    return redirect(url_for('login'))
 
 
 # start the sever with the 'run()' method:

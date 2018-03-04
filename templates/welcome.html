@@ -11,9 +11,12 @@
     </head>
     <body>
         <div class="container">
-            <h1>The Flask Welcome Page!!</h1>
+            <h1>The Login Welcome Page!!</h1>
             <br>
-            <p>And now click <a href="/">here</a> to go back to the Main page again!</p>
+            {% for message in get_flashed_messages() %}
+              {{ message }}
+            {% endfor %}
+            <p>Click <a href="/logout">here</a> to log out.</p>
         </div>
     </body>
 </html>
