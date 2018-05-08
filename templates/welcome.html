@@ -4,5 +4,12 @@
 <h1>The Welcome Page!!</h1>
 <br>
 <p>Click <a href="/logout">here</a> to log out.</p>
+<br><br>
+<h4>Posts</h4>
+{% for post in posts %}
+    <strong>Title:</strong> {{ post.title }} <br>
+    <strong>Post:</strong> {{ post.description }} <br>
+<br>
+{% endfor %}
 
 {% endblock %}

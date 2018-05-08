@@ -1,14 +1,16 @@
-"""Simple Flask web site implementation"""
-
+"""Simple Flask web app implementation"""
 
 from functools import wraps
-from flask import Flask, flash, redirect, render_template, request, session, url_for
+import sqlite3
+from flask import Flask, flash, g, redirect, render_template, request, \
+        session, url_for
 
 
 # create the application object:
 app = Flask(__name__)
 
 app.secret_key = "my precious"
+app.database = "sample.db"
 
 
 # login required decorator:
@@ -35,7 +37,11 @@ def home():
 @login_required
 def welcome():
     """calls the web site welcome page"""
-    return render_template("welcome.html")
+    g.db = connect_db()
+    cur = g.db.execute('select * from posts')
+    posts = [dict(title=row[0], description=row[1]) for row in cur.fetchall()]
+    g.db.close()
+    return render_template("welcome.html", posts=posts)
 
 
 #  route for handling the login page logic:
@@ -61,6 +67,11 @@ def logout():
     session.pop('logged_in', None)
     flash('You were successfully logged out!')
     return redirect(url_for('login'))
+
+
+def connect_db():
+    """create a databse object"""
+    return sqlite3.connect(app.database)
 
 
 # start the sever with the 'run()' method:
