@@ -1,5 +1,7 @@
-## Flask Web app tutorial test
-----
+Flask Web app tutorial test
+---------------------------
+
+Main Flask tutorial by [Michael Herman](https://www.youtube.com/playlist?list=PLLjmbh6XPGK4ISY747FUHXEl9lBxre4mM) at [RealPython](https://realpython.com/)
 
 A simple Flask web application tutorial - a first try-out.
 
